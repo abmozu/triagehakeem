@@ -13,7 +13,6 @@ function ChatContainer() {
   const {
     messages,
     inputMessage,
-    isFresh,
     setInputMessage,
     handleSendMessage,
     isPending,

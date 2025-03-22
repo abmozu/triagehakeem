@@ -1,7 +1,6 @@
 import Header from "./components/custom/header";
 import { MessageList } from "./components/chat/MessageList";
 import { MessageInput } from "./components/chat/MessageInput";
-import { PromptSuggestions } from "./components/custom/prompt_suggestions";
 import {
   MessagesProvider,
   useMessagesContext,
@@ -40,7 +39,6 @@ function ChatContainer() {
         </div>
       )}
       <MessageList messages={messages} />
-      {isFresh && <PromptSuggestions />}
       <MessageInput
         inputMessage={inputMessage}
         setInputMessage={setInputMessage}

@@ -5,7 +5,6 @@ import { IMessage } from "@/types";
 interface MessagesContextType {
   messages: IMessage[];
   inputMessage: string;
-  isFresh: boolean,
   setInputMessage: (message: string) => void;
   handleSendMessage: (message?: string) => void;
   isPending: boolean;
@@ -17,8 +16,6 @@ export function MessagesProvider({ children  }: { children: ReactNode }) {
   const { mutate: sendMessage, isPending } = useMessages();
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
-  const [isFresh, setIsFresh] = useState(true)
-  
 
   const handleSendMessage = (overrideMessage?: string) => {
     const messageToSend = overrideMessage || inputMessage;
@@ -38,8 +35,6 @@ export function MessagesProvider({ children  }: { children: ReactNode }) {
     };
 
     setMessages((prev) => [...prev, placeholderAssistantMessage]);
-
-    setIsFresh(false)
 
     let accumulatedResponse = "";
 
@@ -64,7 +59,6 @@ export function MessagesProvider({ children  }: { children: ReactNode }) {
       value={{
         messages,
         inputMessage,
-        isFresh,
         setInputMessage,
         handleSendMessage,
         isPending,

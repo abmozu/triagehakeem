@@ -30,16 +30,23 @@ const sendMessage = async (
   onChunk?: (chunk: string) => void
 ) => {
   let threadId = getCurrentThreadId();
+  console.log("Current Thread ID:", threadId);
 
   if (!threadId) {
+    console.log("Creating new thread...");
     const thread = await openai.beta.threads.create();
     threadId = thread.id;
     setCurrentThreadId(threadId);
+    console.log("New Thread ID:", threadId);
   }
+
+  console.log("Sending message:", message);
   await openai.beta.threads.messages.create(threadId, {
     role: "user",
     content: message,
   });
+
+  console.log("Creating run with assistant ID:", import.meta.env.VITE_OPENAI_ASSISTANT_ID);
   const run = await openai.beta.threads.runs.create(threadId, {
     assistant_id: import.meta.env.VITE_OPENAI_ASSISTANT_ID,
     stream: true,
@@ -49,6 +56,7 @@ const sendMessage = async (
   for await (const event of run) {
     if (event.event === "thread.message.delta") {
       const chunk = (event.data.delta.content?.[0] as any)?.text.value || "";
+      console.log("Received chunk:", chunk);
       res += chunk;
       onChunk?.(chunk);
     }
